@@ -11,8 +11,13 @@ REGULARAZTION_RATE = 0.0001
 TRAINING_STEPS = 30000
 MOVING_AVERAGE_DECAY = 0.99
 
-MODEL_SAVE_PATH = "/Users/douglas/Desktop/model"
+MODEL_SAVE_PATH = ""
 MODEL_NAME = "mnistModel.ckpt"
+
+def createModelPath():
+	MODEL_SAVE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "model")
+	if not os.path.exists(MODEL_SAVE_PATH):
+		os.makedirs(MODEL_SAVE_PATH)
 
 def train(mnist):
 	x = tf.placeholder(tf.float32, [None, mnist_inference.INPUT_NODE], name = 'x-input')
@@ -45,6 +50,7 @@ def train(mnist):
 				saver.save(sess, os.path.join(MODEL_SAVE_PATH, MODEL_NAME), global_step = global_step)
 
 def main(argv = None):
+	createModelPath()
 	mnist = input_data.read_data_sets("/tmp/data", one_hot = True)
 	train(mnist)
 
